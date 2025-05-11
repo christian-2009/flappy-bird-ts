@@ -1,0 +1,21 @@
+{
+  "name": "flappy-bird-ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "vite": "6.3.5"
+  },
+  "dependencies": {
+    "excalibur": "0.30.3"
+  }
+}
