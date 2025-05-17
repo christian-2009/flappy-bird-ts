@@ -13,9 +13,12 @@ export class Bird extends ex.Actor {
     }
 
     jumping = false
+    clickOrTouchEvent = false
 
-    override onInitialize(): void {
+    override onInitialize(engine: ex.Engine): void {
         this.acc = ex.vec(0, Config.BirdAcceleration);
+        engine.input.pointers.primary.on('down', () => this.clickOrTouchEvent = true)
+        engine.input.pointers.primary.on('up', () => this.clickOrTouchEvent = false)
     }
 
     override onCollisionStart(_self: ex.Collider, other: ex.Collider): void {
@@ -24,7 +27,7 @@ export class Bird extends ex.Actor {
         }
     }
 
-    private isInputActive = (engine: ex.Engine) => engine.input.keyboard.isHeld(ex.Keys.Space)
+    private isInputActive = (engine: ex.Engine) => engine.input.keyboard.isHeld(ex.Keys.Space) || this.clickOrTouchEvent
 
     override onPostUpdate(engine: ex.Engine) {
         if (!this.jumping && this.isInputActive(engine)) {
