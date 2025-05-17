@@ -1,6 +1,5 @@
 import * as ex from 'excalibur';
-import { Bird } from './bird';
-import {Ground} from "./ground";
+import {Level} from "./scenes/level";
 
 const game = new ex.Engine({
     width: 400,
@@ -8,13 +7,10 @@ const game = new ex.Engine({
     backgroundColor: ex.Color.fromHex("#54C0CA"),
     pixelArt: true,
     pixelRatio: 2,
-    displayMode: ex.DisplayMode.FitScreen
+    displayMode: ex.DisplayMode.FitScreen,
+    scenes: {Level: Level}
 });
 
-const bird = new Bird();
-const ground = new Ground(ex.vec(0, game.screen.height -64))
-
-game.add(bird)
-game.add(ground)
-
-game.start();
+game.start().then(() => {
+    game.goToScene('Level')
+})

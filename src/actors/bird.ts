@@ -1,12 +1,13 @@
 import * as ex from "excalibur";
 import {Ground} from "./ground";
+import {Pipe} from "./pipe";
+import {Config} from "../config";
 
 export class Bird extends ex.Actor {
     constructor() {
         super({
-            pos: ex.vec(200, 300),
-            width: 16,
-            height: 16,
+            pos: Config.BirdStartPos,
+            radius: 8,
             color: ex.Color.Yellow
         })
     }
@@ -14,11 +15,11 @@ export class Bird extends ex.Actor {
     jumping = false
 
     override onInitialize(): void {
-        this.acc = ex.vec(0, 1200);
+        this.acc = ex.vec(0, Config.BirdAcceleration);
     }
 
     override onCollisionStart(_self: ex.Collider, other: ex.Collider): void {
-        if (other.owner instanceof Ground) {
+        if (other.owner instanceof Ground || other.owner instanceof Pipe) {
             this.stop();
         }
     }
@@ -27,7 +28,7 @@ export class Bird extends ex.Actor {
 
     override onPostUpdate(engine: ex.Engine) {
         if (!this.jumping && this.isInputActive(engine)) {
-            this.vel.y += -800;
+            this.vel.y += Config.BirdJumpVelocity;
             this.jumping = true;
         }
 
@@ -36,10 +37,10 @@ export class Bird extends ex.Actor {
         }
 
         if (!this.jumping) {
-            this.acc = ex.vec(0, 1200);
+            this.acc = ex.vec(0, Config.BirdAcceleration);
         }
 
-        this.vel.y = ex.clamp(this.vel.y, -500, 500);
+        this.vel.y = ex.clamp(this.vel.y, Config.BirdMinVelocity, Config.BirdMaxVelocity);
 
         this.rotation = ex.vec(200, this.vel.y).toAngle();
     }
